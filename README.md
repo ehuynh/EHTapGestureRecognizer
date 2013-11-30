@@ -3,11 +3,9 @@
 [![Version](http://cocoapod-badges.herokuapp.com/v/EHTapGestureRecognizer/badge.png)](http://cocoadocs.org/docsets/EHTapGestureRecognizer)
 [![Platform](http://cocoapod-badges.herokuapp.com/p/EHTapGestureRecognizer/badge.png)](http://cocoadocs.org/docsets/EHTapGestureRecognizer)
 
-## Usage
-
-To run the example project; clone the repo, and run `pod install` from the Project directory first.
-
 ## Requirements
+
+iOS5
 
 ## Installation
 

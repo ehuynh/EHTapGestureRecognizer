@@ -31,6 +31,9 @@
 /// timer that fails the gesture after it's time has elapsed
 @property (nonatomic, strong) NSTimer *failGestureTimer;
 
+/// count of how many taps that have been recognized so far
+@property (nonatomic) NSUInteger numberOfTapsRecognized;
+
 @end
 
 static CGFloat defaultWaitTime = 0.0f;
@@ -46,6 +49,7 @@ static CGFloat defaultWaitTime = 0.0f;
         self.failGestureTimer = nil;
         self.waitTime = defaultWaitTime;
         self.numberOfTapsRequired = 1;
+        self.numberOfTapsRecognized = 0;
     }
     
     return self;
@@ -55,27 +59,40 @@ static CGFloat defaultWaitTime = 0.0f;
 
 - (void)reset
 {
+    [super reset];
+    
+    self.numberOfTapsRecognized = 0;
     [self.failGestureTimer invalidate];
     self.failGestureTimer = nil;
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    
+    // if the touch has moved, then it is not a tap. Fail gesture immediately
+    [self failGesture];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
     
-    if (![self isTimerRunning])
-    {
-        [self fireTimer];
-    }
-    
-    [self updateGestureStateWithTouch:[[touches allObjects] firstObject]];
+    [self fireTimerIfItIsNotAlreadyRunning];
+    [self incrementNumberOfTapsRecognized];
+    [self updateGestureState];
 }
 
 #pragma mark - tap processing
 
-- (void)updateGestureStateWithTouch:(UITouch *)touch
+- (void)incrementNumberOfTapsRecognized
 {
-    if (touch.tapCount == self.numberOfTapsRequired)
+    self.numberOfTapsRecognized++;
+}
+
+- (void)updateGestureState
+{
+    if (self.numberOfTapsRecognized == self.numberOfTapsRequired)
     {
         [self.failGestureTimer invalidate];
         self.state = UIGestureRecognizerStateRecognized;
@@ -94,6 +111,14 @@ static CGFloat defaultWaitTime = 0.0f;
 }
 
 #pragma mark - Timer handling
+
+- (void)fireTimerIfItIsNotAlreadyRunning
+{
+    if (![self isTimerRunning])
+    {
+        [self fireTimer];
+    }
+}
 
 - (void)fireTimer
 {

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "EHTapGestureRecognizer"
-  s.version      = "0.1.1"
+  s.version      = "0.1.2"
   s.summary      = "EHTapGestureRecognizer is a time based alternative to UITapGestureRecognizer."
   s.description  = <<-DESC
 		    EHTapGestureRecognizer is an time based alternative to UITapGestureRecognizer

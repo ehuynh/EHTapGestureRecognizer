@@ -66,14 +66,6 @@ static CGFloat defaultWaitTime = 0.0f;
     self.failGestureTimer = nil;
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super touchesMoved:touches withEvent:event];
-    
-    // if the touch has moved, then it is not a tap. Fail gesture immediately
-    [self failGesture];
-}
-
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
